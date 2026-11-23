@@ -1,7 +1,10 @@
-import { createSvgEl, clearSvgGroup, createSvgText, createSvgButton, createSvgCard } from './svg-ui.js';
+import { createSvgEl, clearSvgGroup, createSvgText, createSvgButton } from './svg-ui.js';
 import { registerRoute, initRouter, navigate, getCurrentPath } from './router.js';
 import { isMuted, toggleMute, getRate, cycleRate, speak } from './tts.js';
 import { renderHomeView } from './views/home-view.js';
+import { renderFocusView, cleanupFocusView } from './views/focus-view.js';
+import { renderBreatheView, cleanupBreatheView } from './views/breathe-view.js';
+import { renderStatsView } from './views/stats-view.js';
 
 const STORAGE_KEY = 'vectorflow_sessions';
 
@@ -153,18 +156,6 @@ const ROUTE_SPEECH = {
   '/stats': 'Statistics view'
 };
 
-function renderPlaceholder(container, title) {
-  const card = createSvgCard({
-    x: 60,
-    y: 115,
-    width: 1080,
-    height: 220,
-    title: title,
-    subtitle: 'View under construction.'
-  });
-  container.appendChild(card);
-}
-
 function setupApp() {
   const viewContainer = document.getElementById('view-container');
 
@@ -175,20 +166,22 @@ function setupApp() {
 
   registerRoute('/focus', () => {
     clearSvgGroup(viewContainer);
-    renderPlaceholder(viewContainer, 'Focus Timer');
+    renderFocusView(viewContainer);
   });
 
   registerRoute('/breathe', () => {
     clearSvgGroup(viewContainer);
-    renderPlaceholder(viewContainer, 'Breathing Coach');
+    renderBreatheView(viewContainer);
   });
 
   registerRoute('/stats', () => {
     clearSvgGroup(viewContainer);
-    renderPlaceholder(viewContainer, 'Stats');
+    renderStatsView(viewContainer);
   });
 
   initRouter((newPath, shouldAnnounce) => {
+    cleanupFocusView();
+    cleanupBreatheView();
     renderNavBar(newPath);
     if (shouldAnnounce && ROUTE_SPEECH[newPath]) {
       speak(ROUTE_SPEECH[newPath]);

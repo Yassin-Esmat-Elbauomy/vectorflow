@@ -34,3 +34,20 @@ html, body {
 .svg-card {
   transition: transform 0.15s;
 }
+
+.svg-card-click {
+  cursor: pointer;
+}
+
+.svg-card-click:hover rect {
+  stroke: #0d9488;
+  stroke-width: 2;
+}
+
+.ring-progress {
+  transition: stroke-dashoffset 0.35s linear;
+}
+
+.breathe-orb {
+  transition: r 0.25s linear, fill 0.25s ease;
+}
