@@ -1,6 +1,7 @@
 import { createSvgEl, clearSvgGroup, createSvgText, createSvgButton, createSvgCard } from './svg-ui.js';
 import { registerRoute, initRouter, navigate, getCurrentPath } from './router.js';
 import { isMuted, toggleMute, getRate, cycleRate, speak } from './tts.js';
+import { renderHomeView } from './views/home-view.js';
 
 const STORAGE_KEY = 'vectorflow_sessions';
 
@@ -169,7 +170,7 @@ function setupApp() {
 
   registerRoute('/', () => {
     clearSvgGroup(viewContainer);
-    renderPlaceholder(viewContainer, 'Home');
+    renderHomeView(viewContainer);
   });
 
   registerRoute('/focus', () => {
